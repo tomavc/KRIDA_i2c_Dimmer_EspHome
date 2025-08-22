@@ -1,0 +1,88 @@
+# this is an example configuration for ESPHome using the KRIDA i2c Dimmer modules, 
+# it includes 3 modules with a total of 11 channels, you can adjust it to your needs
+# it is set up for WT32-ETH01 board with ethernet, you can change it to your board and connection type
+# make sure to change the i2c pins if you use different ones
+
+substitutions:
+  name: "dimmer-module"
+  friendly_name: "Dimmer Module"
+  transition_length: 3s  # Shared across all lights
+
+esphome:
+  name: ${name}
+  friendly_name: ${friendly_name}
+  name_add_mac_suffix: false
+
+esp32:
+  board: esp-wrover-kit
+  framework:
+    type: arduino
+
+external_components:
+  - source: github://tomavc/KRIDA_i2c_Dimmer_EspHome@main
+    components: [i2c_dimmer]
+
+packages:
+  my_modules:
+    url: https://github.com/tomavc/KRIDA_i2c_Dimmer_EspHome
+    refresh: 1s  # Optional: Refresh interval
+    files:
+      - path: components/i2c_dimmer/yaml/module_4ch.yaml  # Module 1 (4 channels)
+        vars:
+          address: 0x27
+          ch1_name: "Conservatory"
+          ch2_name: "Staircase"
+          ch3_name: "Living room Area 1"
+          ch4_name: "Living room Area 2"
+          transition_length: ${transition_length}
+      - path: components/i2c_dimmer/yaml/module_4ch.yaml  # Module 2 (4 channels)
+        vars:
+          address: 0x26
+          ch1_name: "Kitchen"
+          ch2_name: "Dining Room"
+          ch3_name: "Dining Room Accent"
+          ch4_name: "Hallway"
+          transition_length: ${transition_length}
+      - path: components/i2c_dimmer/yaml/module_3ch.yaml  # Module 3 (3 channels)
+        vars:
+          address: 0x24
+          ch1_name: "Entrance Pendant Lights"
+          ch2_name: "Porch Light"
+          ch3_name: "Garage Light"
+          transition_length: ${transition_length}
+
+api:
+
+ota:
+  platform: esphome
+  password: !secret ota_password
+  
+web_server:
+  port: 80
+
+ethernet:
+  type: LAN8720
+  mdc_pin: GPIO23
+  mdio_pin: GPIO18
+  clk_mode: GPIO0_IN
+  phy_addr: 1
+  power_pin: GPIO16
+
+
+logger:
+  level: WARN
+
+
+sensor:  # Optional monitoring
+  - platform: uptime
+    name: "Uptime"
+
+i2c:
+  sda: GPIO33
+  scl: GPIO32
+  scan: true
+  frequency: 100kHz 
+
+button:
+  - platform: restart
+    name: "restart esp32"
