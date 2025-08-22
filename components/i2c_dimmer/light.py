@@ -14,7 +14,7 @@ I2CDimmerOutput = i2c_dimmer_ns.class_('I2CDimmerOutput', light.LightOutput, cg.
 
 CONFIG_SCHEMA = light.BRIGHTNESS_ONLY_LIGHT_SCHEMA.extend({
     cv.GenerateID(CONF_OUTPUT_ID): cv.declare_id(I2CDimmerOutput),
-    cv.Required(CONF_I2C_ADDRESS): pins.i2c_device_address,
+    cv.Required(CONF_I2C_ADDRESS): cv.i2c_address,
     cv.Required(CONF_CHANNEL): cv.uint8_t,
 }).extend(cv.COMPONENT_SCHEMA)
 
