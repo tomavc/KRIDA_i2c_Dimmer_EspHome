@@ -30,9 +30,10 @@ external_components:
 packages:
   my_modules:
     url: https://github.com/tomavc/KRIDA_i2c_Dimmer_EspHome
+    path: components/i2c_dimmer/yaml
     refresh: 1s  # Optional: Refresh interval
     files:
-      - path: components/i2c_dimmer/yaml/module_4ch.yaml  # Module 1
+      - path: module_4ch.yaml  # Module 1
         vars:
           address: 0x27
           ch1_name: "Kitchen"
@@ -40,7 +41,7 @@ packages:
           ch3_name: "Living Room"
           ch4_name: "Conservatory"
           transition_length: 2s
-      - path: components/i2c_dimmer/yaml/module_3ch.yaml  # Module 2
+      - path: module_3ch.yaml  # Module 2
         vars:
           address: 0x26
           ch1_name: "Hallway Lights"
