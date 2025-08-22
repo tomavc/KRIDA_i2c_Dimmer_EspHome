@@ -37,6 +37,7 @@ class I2CDimmerOutput : public Component, public light::LightOutput {
     if (Wire.endTransmission() != 0) {
       ESP_LOGE("I2CDimmer", "Failed to write to I2C device at address 0x%02X, channel 0x%02X", this->i2c_address_, this->channel_);
     }
+    delayMicroseconds(500);  // Experimental: Small delay to space I2C commands during rapid transitions (adjust or remove if issues)
   }
 
  protected:
