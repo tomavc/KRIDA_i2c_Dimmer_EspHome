@@ -1,0 +1,21 @@
+light:
+  - platform: i2c_dimmer
+    name: ${ch1_name}
+    address: ${address}
+    channel: 0x80
+    default_transition_length: ${transition_length}
+  - platform: i2c_dimmer
+    name: ${ch2_name}
+    address: ${address}
+    channel: 0x81
+    default_transition_length: ${transition_length}
+  - platform: i2c_dimmer
+    name: ${ch3_name}
+    address: ${address}
+    channel: 0x82
+    default_transition_length: ${transition_length}
+  - platform: i2c_dimmer
+    name: ${ch4_name}
+    address: ${address}
+    channel: 0x83
+    default_transition_length: ${transition_length}
