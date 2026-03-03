@@ -4,3 +4,4 @@ light:
     address: ${address}
     channel: 0x80
     default_transition_length: ${transition_length}
+    restore_mode: ALWAYS_OFF
