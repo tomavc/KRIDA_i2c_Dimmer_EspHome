@@ -21,14 +21,14 @@ class I2CDimmerOutput : public Component, public light::LightOutput {
 
   light::LightTraits get_traits() override {
     auto traits = light::LightTraits();
-    traits.set_supported_color_modes({light::ColorMode::BRIGHTNESS, light::ColorMode::ON_OFF});
+    traits.set_supported_color_modes({light::ColorMode::BRIGHTNESS});
     return traits;
   }
 
   void write_state(light::LightState *state) override {
-    uint8_t brightness = 100;
+    uint8_t brightness = 0;
     if (state->current_values.get_state()) {
-      brightness = (uint8_t)(100 - (int)(state->current_values.get_brightness() * 100));
+      brightness = (uint8_t)(state->current_values.get_brightness() * 100);
     }
     ESP_LOGD("I2CDimmer", "Writing brightness %d to address 0x%02X, channel 0x%02X", brightness, this->i2c_address_, this->channel_);
     Wire.beginTransmission(this->i2c_address_);
@@ -37,7 +37,7 @@ class I2CDimmerOutput : public Component, public light::LightOutput {
     if (Wire.endTransmission() != 0) {
       ESP_LOGE("I2CDimmer", "Failed to write to I2C device at address 0x%02X, channel 0x%02X", this->i2c_address_, this->channel_);
     }
-    delayMicroseconds(500);  // Experimental: Small delay to space I2C commands during rapid transitions (adjust or remove if issues)
+    // delayMicroseconds(500);  // Experimental: Small delay to space I2C commands during rapid transitions (adjust or remove if issues)
   }
 
  protected:
