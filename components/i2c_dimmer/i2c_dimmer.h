@@ -34,9 +34,11 @@ class I2CDimmerOutput : public Component, public light::LightOutput, public i2c:
     if (state->current_values.get_state()) {
       brightness = (uint8_t) (state->current_values.get_brightness() * 100);
     }
-    ESP_LOGD(TAG, "Writing brightness %d to address 0x%02X, channel 0x%02X", brightness, this->address_,
-             this->channel_);
-    uint8_t data[2] = {this->channel_, brightness};
+    // KRIDA board uses inverted scale: 0 = full on, 100 = off
+    uint8_t value = 100 - brightness;
+    ESP_LOGD(TAG, "Writing brightness %d (raw %d) to address 0x%02X, channel 0x%02X", brightness, value,
+             this->address_, this->channel_);
+    uint8_t data[2] = {this->channel_, value};
     if (this->write(data, sizeof(data)) != i2c::ERROR_OK) {
       ESP_LOGE(TAG, "Failed to write to I2C device at address 0x%02X, channel 0x%02X", this->address_,
                this->channel_);
